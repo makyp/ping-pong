@@ -1,5 +1,5 @@
 import pygame
-import random
+
 # Inicializar Pygame
 pygame.init()
 
@@ -26,8 +26,8 @@ VELOCIDAD_PELOTA = 7.6
 # Tamaño de las paletas y la pelota
 ANCHO_PALETAS = 10
 ALTO_PALETAS = 60
-ANCHO_PELOTA = 15
-ALTO_PELOTA = 15
+ANCHO_PELOTA = 12
+ALTO_PELOTA = 12
 
 # Posiciones iniciales de las paletas
 POSICION_PALETA_IZQUIERDA = (ANCHO_PALETAS, ALTO/2 - ALTO_PALETAS/2)
@@ -39,11 +39,7 @@ POSICION_PELOTA = (ANCHO/2 - ANCHO_PELOTA/2, ALTO/2 - ALTO_PELOTA/2)
 # Puntuaciones iniciales
 puntuacion_izquierda = 0
 puntuacion_derecha = 0
-puntuacion_jugador = 0
-puntuacion_maquina = 0
-#Definir ganador
-Ganador="Ganador"
-Perdedor="Perdedor"
+
 # Variables para el movimiento continuo de las paletas
 mover_paleta_izquierda_arriba = False
 mover_paleta_izquierda_abajo = False
@@ -59,14 +55,6 @@ def mostrar_contador():
     fuente = pygame.font.Font(None, 50)
     texto = fuente.render(f"{puntuacion_izquierda} - {puntuacion_derecha}", True, BLANCO)
     pantalla.blit(texto, (ANCHO/2 - texto.get_width()/2, 20))
-def definir_ganador_izq():
-    fuente = pygame.font.Font(None, 50)
-    textoGanadorIzq = fuente.render(f"{Ganador} - {Perdedor}", True, BLANCO)
-    pantalla.blit(textoGanadorIzq, (ANCHO/3 - textoGanadorIzq.get_width()/3, 20))
-def definir_ganador_derecha():
-    fuente = pygame.font.Font(None, 50)
-    textoGanadorIzq = fuente.render(f"{Perdedor} - {Ganador}", True, BLANCO)
-    pantalla.blit(textoGanadorIzq, (ANCHO/3 - textoGanadorIzq.get_width()/3, 20))
 def mostrar_mensaje_modjuego():
     fuente = pygame.font.Font(None, 60)
     texto = fuente.render("Selecciona el número de jugadores", True, BLANCO)
@@ -148,9 +136,13 @@ class Pelota:
         global puntuacion_izquierda, puntuacion_derecha
         if lado == "izquierda":
             puntuacion_izquierda += 1
+            if puntuacion_izquierda >= 12:
+                mostrar_mensaje_victoria()
         elif lado == "derecha":
             puntuacion_derecha += 1
-    
+            if puntuacion_derecha >= 12:
+                mostrar_mensaje_victoria()
+
 # Crear las paletas
 paleta_izquierda = Paleta(*POSICION_PALETA_IZQUIERDA)
 paleta_derecha = Paleta(*POSICION_PALETA_DERECHA)
@@ -215,12 +207,14 @@ def accion_un_jugador():
         # Actualizar la pantalla
         pygame.display.flip()
         # Limitar la velocidad de fotogramas
-        pygame.time.Clock().tick(50)
+        pygame.time.Clock().tick(60)
         # Finalizar el juego si se alcanza la puntuación máxima
         if puntuacion_izquierda >= 12 or puntuacion_derecha >= 12:
-            mostrar_mensaje_derrota()
-            mostrar_mensaje_victoria()
-            un_jugador = False
+            if puntuacion_izquierda ==12:
+                mostrar_mensaje_victoria
+            mostrar_mensaje_derrota
+        un_jugador: False
+    
 # Acción para el botón "Dos jugadores"
 def accion_dos_jugadores():
     global paleta_izquierda, paleta_derecha, pelota, puntuacion_izquierda, puntuacion_derecha
@@ -278,7 +272,6 @@ def accion_dos_jugadores():
 
         # Finalizar el juego si se alcanza la puntuación máxima
         if puntuacion_izquierda >= 12 or puntuacion_derecha >= 12:
-
             dos_jugadores = False
 
 # Crear los botones "Un jugador" y "Dos jugadores"
@@ -312,7 +305,7 @@ def manejar_eventos_teclado(event):
             mover_paleta_derecha_arriba = False
         elif event.key == pygame.K_DOWN:
             mover_paleta_derecha_abajo = False
-            
+
 # Bucle principal del juego
 ejecutando = True
 dos_jugadores = False
