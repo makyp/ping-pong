@@ -1,4 +1,5 @@
 import pygame
+import random
 # Inicializar Pygame
 pygame.init()
 
@@ -13,15 +14,20 @@ NEGRO = (0, 0, 0)
 MORADO = (128, 0, 128)
 NARANJA = (255, 165, 0)
 
+#Imagen de inicio
+imgInicio= pygame.image.load("./Paleta.png")
+#Fuente del texto
+fuente_personalizada = pygame.font.Font("./Oswald-VariableFont_wght.ttf", 50)
+superficie_texto = fuente_personalizada.render("JUEGO DE PING-PONG", True, NEGRO)
 # Velocidades de las paletas y la pelota
-VELOCIDAD_PALETAS = 10
-VELOCIDAD_PELOTA = 4
+VELOCIDAD_PALETAS = 7
+VELOCIDAD_PELOTA = 7.6
 
 # Tamaño de las paletas y la pelota
 ANCHO_PALETAS = 10
 ALTO_PALETAS = 60
-ANCHO_PELOTA = 10
-ALTO_PELOTA = 10
+ANCHO_PELOTA = 15
+ALTO_PELOTA = 15
 
 # Posiciones iniciales de las paletas
 POSICION_PALETA_IZQUIERDA = (ANCHO_PALETAS, ALTO/2 - ALTO_PALETAS/2)
@@ -35,7 +41,9 @@ puntuacion_izquierda = 0
 puntuacion_derecha = 0
 puntuacion_jugador = 0
 puntuacion_maquina = 0
-
+#Definir ganador
+Ganador="Ganador"
+Perdedor="Perdedor"
 # Variables para el movimiento continuo de las paletas
 mover_paleta_izquierda_arriba = False
 mover_paleta_izquierda_abajo = False
@@ -51,6 +59,14 @@ def mostrar_contador():
     fuente = pygame.font.Font(None, 50)
     texto = fuente.render(f"{puntuacion_izquierda} - {puntuacion_derecha}", True, BLANCO)
     pantalla.blit(texto, (ANCHO/2 - texto.get_width()/2, 20))
+def definir_ganador_izq():
+    fuente = pygame.font.Font(None, 50)
+    textoGanadorIzq = fuente.render(f"{Ganador} - {Perdedor}", True, BLANCO)
+    pantalla.blit(textoGanadorIzq, (ANCHO/3 - textoGanadorIzq.get_width()/3, 20))
+def definir_ganador_derecha():
+    fuente = pygame.font.Font(None, 50)
+    textoGanadorIzq = fuente.render(f"{Perdedor} - {Ganador}", True, BLANCO)
+    pantalla.blit(textoGanadorIzq, (ANCHO/3 - textoGanadorIzq.get_width()/3, 20))
 def mostrar_mensaje_modjuego():
     fuente = pygame.font.Font(None, 60)
     texto = fuente.render("Selecciona el número de jugadores", True, BLANCO)
@@ -132,12 +148,8 @@ class Pelota:
         global puntuacion_izquierda, puntuacion_derecha
         if lado == "izquierda":
             puntuacion_izquierda += 1
-            if puntuacion_izquierda >= 15:
-                mostrar_mensaje_victoria()
         elif lado == "derecha":
             puntuacion_derecha += 1
-            if puntuacion_derecha >= 15:
-                mostrar_mensaje_derrota()
     
 # Crear las paletas
 paleta_izquierda = Paleta(*POSICION_PALETA_IZQUIERDA)
@@ -203,9 +215,9 @@ def accion_un_jugador():
         # Actualizar la pantalla
         pygame.display.flip()
         # Limitar la velocidad de fotogramas
-        pygame.time.Clock().tick(70)
+        pygame.time.Clock().tick(50)
         # Finalizar el juego si se alcanza la puntuación máxima
-        if puntuacion_izquierda >= 15 or puntuacion_derecha >= 15:
+        if puntuacion_izquierda >= 12 or puntuacion_derecha >= 12:
             mostrar_mensaje_derrota()
             mostrar_mensaje_victoria()
             un_jugador = False
@@ -265,7 +277,8 @@ def accion_dos_jugadores():
         pygame.time.Clock().tick(60)
 
         # Finalizar el juego si se alcanza la puntuación máxima
-        if puntuacion_izquierda >= 15 or puntuacion_derecha >= 15:
+        if puntuacion_izquierda >= 12 or puntuacion_derecha >= 12:
+
             dos_jugadores = False
 
 # Crear los botones "Un jugador" y "Dos jugadores"
@@ -317,9 +330,10 @@ while ejecutando:
 
     # Rellenar la pantalla con color azul
     pantalla.fill(AZUL)
+    pantalla.blit(imgInicio, (120, 40))
+    mostrar_mensaje_modjuego()
 
     # Dibujar los botones
-    mostrar_mensaje_modjuego()
     boton_un_jugador.dibujar()
     boton_dos_jugadores.dibujar()
 
