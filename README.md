@@ -10,4 +10,10 @@ Existen dos modos de juego:
 
 Ten en cuenta que para que te ejecute el código de manera idonea debes tener instalada la libreria pygame
 
-**Para eso ejecuta en tu terminal : pip install pygame**
+## Librerias
+
+Es necesario que tengas instalada la siguiente libreria de python
+
+```bash
+pip install pygame
+```
